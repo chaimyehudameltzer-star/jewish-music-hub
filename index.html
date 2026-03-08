@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jewish Music Hub - March 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .card-hover {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .nav-link {
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+        .nav-link:hover {
+            color: #818cf8;
+        }
+        .active-filter {
+            color: #818cf8;
+            border-bottom: 2px solid #818cf8;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased">
+
+    <!-- Header & Navigation -->
+    <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between py-4 border-b border-slate-800">
+                <div class="flex items-center gap-3 cursor-pointer" onclick="filterByArtist('All')">
+                    <div class="bg-indigo-500 p-1.5 rounded-lg">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+                    </div>
+                    <h1 class="text-xl font-bold tracking-tight">Music<span class="text-indigo-400">Hub</span></h1>
+                </div>
+                <div class="text-slate-400 text-xs font-medium uppercase tracking-widest hidden sm:block">
+                    Official 2026 Release Hub
+                </div>
+            </div>
+            
+            <!-- Artist Hub Navigation -->
+            <nav class="flex items-center gap-6 py-3 overflow-x-auto no-scrollbar text-sm font-medium whitespace-nowrap">
+                <span class="text-slate-500 text-xs uppercase font-black pr-2 border-r border-slate-800 mr-2">Artist Hub:</span>
+                <span onclick="filterByArtist('All')" id="btn-All" class="nav-link active-filter">Top Trending</span>
+                <span onclick="filterByArtist('Mordechai Shapiro')" id="btn-Mordechai" class="nav-link">Mordechai Shapiro</span>
+                <span onclick="filterByArtist('Benny Friedman')" id="btn-Benny" class="nav-link">Benny Friedman</span>
+                <span onclick="filterByArtist('TYH Nation')" id="btn-TYH" class="nav-link">TYH Nation</span>
+                <span onclick="filterByArtist('Shmueli Ungar')" id="btn-Shmueli" class="nav-link">Shmueli Ungar</span>
+                <span onclick="filterByArtist('Yaakov Shwekey')" id="btn-Yaakov" class="nav-link">Yaakov Shwekey</span>
+                <span onclick="filterByArtist('Lipa Schmeltzer')" id="btn-Lipa" class="nav-link">Lipa Schmeltzer</span>
+                <span onclick="filterByArtist('Joey Newcomb')" id="btn-Joey" class="nav-link">Joey Newcomb</span>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        
+        <div class="mb-10 flex flex-col gap-6">
+            <!-- Title and Subtitle -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <h2 id="viewTitle" class="text-3xl font-extrabold text-slate-900 tracking-tight">Top Trending</h2>
+                    <p id="viewSubtitle" class="text-slate-500 mt-1">The biggest hits in Jewish music this week.</p>
+                </div>
+                <div class="bg-white px-4 py-2 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-3">
+                    <span class="flex h-2 w-2 relative">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+                    </span>
+                    <span class="text-xs font-bold text-slate-600 uppercase tracking-widest">Live Updates</span>
+                </div>
+            </div>
+
+            <!-- SEARCH BAR (The one you asked for!) -->
+            <div class="relative w-full max-w-2xl mx-auto">
+                <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                </div>
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    onkeyup="handleSearch()" 
+                    placeholder="Search for a song, singer, or style..." 
+                    class="block w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-2xl shadow-sm focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 outline-none transition-all text-slate-900 font-medium"
+                >
+            </div>
+        </div>
+
+        <!-- Grid for Content -->
+        <div id="musicGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Dynamic Content -->
+        </div>
+
+        <div id="emptyState" class="hidden text-center py-24 bg-white rounded-3xl border-2 border-dashed border-slate-200">
+            <div class="text-5xl mb-4">🎧</div>
+            <h3 class="text-xl font-bold text-slate-900">No matches found.</h3>
+            <p class="text-slate-500 mt-2">Try a different search or check another artist!</p>
+        </div>
+
+    </main>
+
+    <script>
+        const tracks = [
+            { id: 1, artist: "Mordechai Shapiro", song: "Ad D'lo Yada", releaseDate: "2026-03-02", style: "Purim Pop", details: "The massive 2026 Purim anthem reaching top charts everywhere.", six: "https://24six.app/app/music/collection/15018", yt: "https://www.youtube.com/watch?v=hxbvPtfPOPY" },
+            { id: 2, artist: "Benny Friedman", song: "Never Alone", releaseDate: "2026-03-06", style: "Heartfelt Pop", details: "Featuring Moshe Tischler, a beautiful song about faith released this week.", six: "https://24six.app/app/music/collection/15018", yt: "https://www.youtube.com/watch?v=zlDnrd5BDig" },
+            { id: 3, artist: "Yaakov Shwekey", song: "L'chaim", releaseDate: "2026-03-05", style: "Classic Simcha", details: "A celebration of life and gratitude from his 2026 project.", six: "https://24six.app/app/music/collection/15018", yt: "https://www.youtube.com/watch?v=hxbvPtfPOPY" },
+            { id: 4, artist: "TYH Nation", song: "Billionaire", releaseDate: "2026-03-05", style: "Simcha Vibes", details: "The high-energy track defining the current Jewish music sound.", six: "https://24six.app/preview/music/collection/17327/billionaire", yt: "https://www.youtube.com/watch?v=hxbvPtfPOPY" },
+            { id: 5, artist: "Shmueli Ungar", song: "Kos Shel Bracha", releaseDate: "2026-03-01", style: "Wedding Hit", details: "Instantly trending in wedding halls and on radio stations.", six: "https://24six.app/app/music/collection/15018", yt: "https://www.youtube.com/watch?v=z4ySoUC7ZX0" },
+            { id: 6, artist: "Lipa Schmeltzer", song: "Vnusni", releaseDate: "2026-03-04", style: "Experimental", details: "Lipa's newest creative masterpiece exploring deep Chassidic concepts.", six: "https://24six.app/app/music/collection/15018", yt: "https://www.youtube.com/watch?v=hxbvPtfPOPY" },
+            { id: 7, artist: "Joey Newcomb", song: "Ameilim BaTorah", releaseDate: "2026-03-03", style: "Kumzitz Pop", details: "Bringing that 'TYH' flavor to a beautiful song about learning.", six: "https://24six.app/app/music/collection/15018", yt: "https://www.youtube.com/watch?v=xj9jGMx4Auw" },
+            { id: 8, artist: "Mordechai Shapiro", song: "Keep Going", releaseDate: "2026-03-04", style: "Inspirational", details: "A motivational anthem released as part of the new Medley series.", six: "https://24six.app/app/music/collection/15018", yt: "https://www.youtube.com/watch?v=hxbvPtfPOPY" },
+            { id: 9, artist: "Benny Friedman", song: "Askilcha", releaseDate: "2026-03-01", style: "Soulful", details: "A traditional soul-stirring melody given a modern production.", six: "https://24six.app/app/music/collection/15018", yt: "https://www.youtube.com/watch?v=hxbvPtfPOPY" },
+            { id: 10, artist: "TYH Nation", song: "Finish Line", releaseDate: "2026-03-07", style: "Anthemic", details: "The latest hit by the TYH Boys about the geulah process.", six: "https://24six.app/app/music/collection/15018", yt: "https://www.youtube.com/watch?v=xj9jGMx4Auw" }
+        ];
+
+        let currentFilter = 'All';
+
+        function filterByArtist(artist) {
+            currentFilter = artist;
+            
+            // Update Navigation
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active-filter'));
+            const safeId = artist === 'TYH Nation' ? 'TYH' : artist.split(' ')[0];
+            const btn = document.getElementById('btn-' + safeId);
+            if (btn) btn.classList.add('active-filter');
+
+            // Update Header Texts
+            const titleEl = document.getElementById('viewTitle');
+            const subEl = document.getElementById('viewSubtitle');
+            
+            if (artist === 'All') {
+                titleEl.innerText = "Top Trending";
+                subEl.innerText = "The biggest hits in Jewish music this week.";
+            } else {
+                titleEl.innerText = artist;
+                subEl.innerText = `Everything released and trending by ${artist} this week.`;
+            }
+
+            render();
+        }
+
+        function handleSearch() {
+            render();
+        }
+
+        function render() {
+            const grid = document.getElementById('musicGrid');
+            const empty = document.getElementById('emptyState');
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            
+            const filtered = tracks.filter(t => {
+                const matchesArtist = currentFilter === 'All' || t.artist === currentFilter;
+                const matchesSearch = t.song.toLowerCase().includes(search) || 
+                                     t.artist.toLowerCase().includes(search) ||
+                                     t.style.toLowerCase().includes(search);
+                return matchesArtist && matchesSearch;
+            });
+
+            grid.innerHTML = '';
+            if (filtered.length === 0) {
+                grid.classList.add('hidden');
+                empty.classList.remove('hidden');
+            } else {
+                grid.classList.remove('hidden');
+                empty.classList.add('hidden');
+                
+                filtered.forEach(track => {
+                    grid.innerHTML += `
+                        <div class="bg-white border border-slate-200 rounded-[2rem] overflow-hidden card-hover flex flex-col h-full shadow-sm">
+                            <div class="p-6 flex-grow">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <span class="text-[10px] font-bold uppercase tracking-widest bg-slate-100 text-slate-600 px-2.5 py-1 rounded-full border border-slate-200">
+                                        ${track.style}
+                                    </span>
+                                </div>
+                                <h3 class="text-xl font-bold text-slate-900 leading-tight mb-1">"${track.song}"</h3>
+                                <p class="text-sm font-semibold text-indigo-500 mb-4">${track.artist}</p>
+                                <p class="text-sm text-slate-500 line-clamp-2 leading-relaxed">${track.details}</p>
+                            </div>
+                            <div class="p-5 bg-slate-50/50 border-t border-slate-100 flex flex-col gap-2.5">
+                                <a href="${track.six}" target="_blank" class="flex items-center justify-center gap-2 bg-slate-900 hover:bg-black text-white py-3 rounded-2xl text-xs font-bold transition-all shadow-md active:scale-95">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                                    Listen on 24Six
+                                </a>
+                                <a href="${track.yt}" target="_blank" class="flex items-center justify-center gap-2 border border-slate-200 bg-white text-slate-700 hover:border-red-400 hover:text-red-500 py-3 rounded-2xl text-xs font-bold transition-all active:scale-95">
+                                    <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                                    Watch Video
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        window.onload = render;
+    </script>
+</body>
+</html>
